@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
-import cityList from "./city.list.min.json";
+//import cityList from "./city.list.min.json";
 
 import "./components/WeatherCard.js";
 import WeatherCard from "./components/WeatherCard.js";
+import SearchBar from "./components/SearchBar.js";
 
 // import { Typeahead } from "react-bootstrap-typeahead";
 // import "react-bootstrap-typeahead/css/Typeahead.css";
@@ -58,7 +59,7 @@ class App extends Component {
   testHandler = () => {
     console.log("HSIEFHISEHFSIF");
     //let data = JSON.parse(cityList);
-    console.log(cityList);
+    //console.log(cityList);
     //let newState = Object.assign({}, this.state);
     // newState = {};
     //.city = "LULUL";
@@ -75,23 +76,25 @@ class App extends Component {
     console.log("INPUT HANDLER");
   };
 
-  _handleSearch = query => {
-    this.setState({ isLoading: true });
+  userSubmitHandler = cityID => {
+    //this.setState({ isLoading: true });
     // console.log("query is: " + query);
     // console.log("loading: " + this.state.isLoading);
     // this.setState({ isLoading: false });
-    let ourRequest = new XMLHttpRequest();
-    ourRequest.open(
-      "GET",
-      `https://api.openweathermap.org/data/2.5/forecast?q=${query},us&mode=JSON&APPID=174645155f8e4d456c204f31cacf19af&units=metric`
-    );
-    ourRequest.onload = () => {
-      //console.log(ourRequest.responseText);
-      let data = JSON.parse(ourRequest.responseText);
-      console.log(data);
-    };
+    // let ourRequest = new XMLHttpRequest();
+    // ourRequest.open(
+    //   "GET",
+    //   `https://api.openweathermap.org/data/2.5/forecast?q=${query},us&mode=JSON&APPID=174645155f8e4d456c204f31cacf19af&units=metric`
+    // );
+    // ourRequest.onload = () => {
+    //   //console.log(ourRequest.responseText);
+    //   let data = JSON.parse(ourRequest.responseText);
+    //   console.log(data);
+    // };
+    // ourRequest.send();
 
-    ourRequest.send();
+    console.log("APP HAS BEEN NOTIFIED");
+    console.log(cityID);
   };
 
   render() {
@@ -240,13 +243,14 @@ class App extends Component {
       //   </div>
       // </div>
 
-      <div className="fullscreen" style={divImage}>
-        <div className="fullscreen" style={divImage2}>
-          <h1 className="display-2">{this.state.city}</h1>
-          <div className="container mt-5">
-            <div className="row align-self-end">
-              <div className="col">
-                {/* <img
+      <React.Fragment>
+        <div className="fullscreen" style={divImage}>
+          <div className="fullscreen" style={divImage2}>
+            <h1 className="display-2">{this.state.city}</h1>
+            <div className="container mt-5">
+              <div className="row align-self-end">
+                <div className="col">
+                  {/* <img
                   src="https://picsum.photos/200"
                   className="rounded-circle"
                   alt="Europe"
@@ -257,28 +261,28 @@ class App extends Component {
                     Ab, quisquam?
                   </p>
                 </div> */}
-                <h2 className="display-5">MON</h2>
-                <button onClick={this.testHandler}>TEST</button>
-              </div>
-              <div className="col">
-                {/* <h2 className="display-5" /> */}
-                <WeatherCard
-                  key={this.state.weatherCards[0].id}
-                  weatherInfo={this.state.weatherCards[0]}
-                />
-              </div>
-              <div className="col">
-                <h2 className="display-5">WED</h2>
-              </div>
-              <div className="col">
-                <h2 className="display-5">THU</h2>
-              </div>
-              <div className="col">
-                <h2 className="display-5">FRI</h2>
+                  <h2 className="display-5">MON</h2>
+                  <button onClick={this.testHandler}>TEST</button>
+                </div>
+                <div className="col">
+                  {/* <h2 className="display-5" /> */}
+                  <WeatherCard
+                    key={this.state.weatherCards[0].id}
+                    weatherInfo={this.state.weatherCards[0]}
+                  />
+                </div>
+                <div className="col">
+                  <h2 className="display-5">WED</h2>
+                </div>
+                <div className="col">
+                  <h2 className="display-5">THU</h2>
+                </div>
+                <div className="col">
+                  <h2 className="display-5">FRI</h2>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <Typeahead
+            {/* <Typeahead
             // labelKey={option => `${option.firstName} ${option.lastName}`}
             //labelKey={option => `${option.name}, ${option.country}`}
             labelKey={option => option.name}
@@ -303,9 +307,14 @@ class App extends Component {
             maxResults={10}
             placeholder="Select a city..."
           /> */}
-          {/* ); */}
+            {/* ); */}
+          </div>
         </div>
-      </div>
+        <SearchBar
+          key={0}
+          notifySubmit={cityID => this.userSubmitHandler(cityID)}
+        />
+      </React.Fragment>
     );
   }
 }
