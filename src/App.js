@@ -76,25 +76,202 @@ class App extends Component {
     console.log("INPUT HANDLER");
   };
 
-  userSubmitHandler = cityID => {
-    //this.setState({ isLoading: true });
-    // console.log("query is: " + query);
-    // console.log("loading: " + this.state.isLoading);
-    // this.setState({ isLoading: false });
-    // let ourRequest = new XMLHttpRequest();
-    // ourRequest.open(
-    //   "GET",
-    //   `https://api.openweathermap.org/data/2.5/forecast?q=${query},us&mode=JSON&APPID=174645155f8e4d456c204f31cacf19af&units=metric`
-    // );
-    // ourRequest.onload = () => {
-    //   //console.log(ourRequest.responseText);
-    //   let data = JSON.parse(ourRequest.responseText);
-    //   console.log(data);
-    // };
-    // ourRequest.send();
+  userSubmitHandler = (cityID, cityName) => {
+    let ourRequest = new XMLHttpRequest();
 
-    console.log("APP HAS BEEN NOTIFIED");
-    console.log(cityID);
+    console.log("this: " + this);
+
+    //openweather request
+    ourRequest.onreadystatechange = () => {
+      if (ourRequest.readyState === 4 && ourRequest.status === 200) {
+        let data = JSON.parse(ourRequest.responseText);
+        console.log(data);
+        this.updateWeatherData(data);
+      }
+    };
+    ourRequest.open(
+      "GET",
+      //"https://api.openweathermap.org/data/2.5/forecast?zip=84106&APPID=174645155f8e4d456c204f31cacf19af&units=metric"
+      `https://api.openweathermap.org/data/2.5/forecast?id=${cityID}&units=metric&APPID=174645155f8e4d456c204f31cacf19af`
+    );
+    ourRequest.send();
+
+    //flickR request
+    // let flickrRequest = new XMLHttpRequest();
+    // flickrRequest.open(
+    //   "GET",
+    //   //"https://api.openweathermap.org/data/2.5/forecast?zip=84106&APPID=174645155f8e4d456c204f31cacf19af&units=metric"
+    //   `https://api.flickr.com/services/rest/?api_key=e8bc8d8665dc000b0d4785600b16f150&method=flickr.photos.search&format=json&safe_search=1&sort=relevance&per_page=30&extras=url_o&text=${cityName}`
+    // );
+
+    // flickrRequest.onreadystatechange = () => {
+    //   console.log("ok");
+    //   if (flickrRequest.readyState === 4 && flickrRequest.status === 200) {
+    //     console.log("HI!");
+    //     console.log(flickrRequest.responseText);
+    //     let data = flickrRequest.responseText.slice(
+    //       14,
+    //       flickrRequest.responseText.length - 1
+    //     );
+    //     this.jsonFlickrApi(JSON.parse(data));
+    //   }
+    // };
+
+    // flickrRequest.send();
+
+    console.log();
+    //Pixabay request
+    let pixabayRequest = new XMLHttpRequest();
+    pixabayRequest.open(
+      "GET",
+      `https://pixabay.com/api/?key=11390807-d4cbc1bf61d785c8216c92544&q=${encodeURI(
+        cityName
+      )}&image_type=photo&safesearch=true&category=buildings&orientation=horizontal&per_page=30`
+    );
+
+    pixabayRequest.onreadystatechange = () => {
+      console.log("ok");
+      if (pixabayRequest.readyState === 4 && pixabayRequest.status === 200) {
+        let data = JSON.parse(pixabayRequest.responseText);
+        console.log(data);
+        this.pixabayResponseHandler(data);
+      }
+    };
+
+    pixabayRequest.send();
+
+    this.setState({ city: cityName });
+  };
+
+  jsonFlickrApi = rsp => {
+    //if (rsp.stat != "ok") console.log("OOPS!");
+
+    console.log("IM IN HERE");
+    console.log(rsp);
+    console.log(rsp.photos.photo[0]);
+    console.log("o-secret: " + rsp.photos.photo[0].osecret);
+    let i = Math.floor(Math.random() * rsp.photos.length);
+
+    // let photoLink = `url("https://farm${
+    //   rsp.photos.photo[i].farm
+    // }.staticflickr.com/${rsp.photos.photo[i].server}/${
+    //   rsp.photos.photo[i].id
+    // }_${rsp.photos.photo[i].secret}_o.jpg")`;
+
+    let photoLink = `url(${rsp.photos.photo[0].url_o})`;
+    console.log("photo link: " + photoLink);
+
+    this.setState({
+      color: "WHITE",
+      img: photoLink
+    });
+  };
+
+  pixabayResponseHandler = data => {
+    if (data.total === 0) {
+      this.setState({
+        color: "WHITE",
+        img: `url("images/default.jpg")`
+      });
+      return;
+    }
+
+    let i = Math.floor(Math.random() * data.hits.length);
+
+    this.setState({
+      color: "WHITE",
+      img: `url("${data.hits[i].largeImageURL}")`
+    });
+  };
+
+  updateWeatherData = data => {
+    let date = new Date(data.list[0].dt_txt);
+    let day = date.getDate();
+    let updatedWeatherCards = [{}, {}, {}, {}, {}];
+
+    let hourIndex = -1;
+    let indexOfSecondDay = -1;
+
+    for (var i = 0; i < this.state.weatherCards.length; i++) {
+      if (i == 0) {
+        let indexOfFirstDay = this.getIndexOfFirstDay(data, day);
+        console.log("index of first: " + indexOfFirstDay);
+        updatedWeatherCards[i] = {
+          id: i,
+          weatherImg: `http://openweathermap.org/img/w/${
+            data.list[indexOfFirstDay].weather[0].icon
+          }.png`,
+          weatherStatus: `${data.list[indexOfFirstDay].weather[0].main}`,
+          tempC: `${data.list[indexOfFirstDay].main.temp}`,
+          dateString: data.list[indexOfFirstDay].dt_txt
+        };
+      } else if (i == 1) {
+        indexOfSecondDay = this.getIndexOfSecondDay(data, day);
+        updatedWeatherCards[i] = {
+          id: i,
+          weatherImg: `http://openweathermap.org/img/w/${
+            data.list[indexOfSecondDay].weather[0].icon
+          }.png`,
+          weatherStatus: `${data.list[indexOfSecondDay].weather[0].main}`,
+          tempC: `${data.list[indexOfSecondDay].main.temp}`,
+          dateString: data.list[indexOfSecondDay].dt_txt
+        };
+        hourIndex = indexOfSecondDay;
+      } else {
+        hourIndex += 8;
+        updatedWeatherCards[i] = {
+          id: i,
+          weatherImg: `http://openweathermap.org/img/w/${
+            data.list[hourIndex].weather[0].icon
+          }.png`,
+          weatherStatus: `${data.list[hourIndex].weather[0].main}`,
+          tempC: `${data.list[hourIndex].main.temp}`,
+          dateString: data.list[hourIndex].dt_txt
+        };
+      }
+    }
+
+    console.log("NEW WEATHER CARDS");
+    console.log(updatedWeatherCards);
+
+    this.setState({ weatherCards: updatedWeatherCards });
+  };
+
+  //If  there is no 12PM slot in the first day, return the index of the latest hour in that day.
+  getIndexOfFirstDay = (data, day) => {
+    console.log("in problem method");
+    console.log("data");
+    console.log(data);
+    console.log("day");
+    console.log(day);
+    let currDay = day;
+    let index = -1;
+    while (currDay == day) {
+      index++;
+      let date = new Date(data.list[index].dt_txt);
+      console.log(date);
+      if (date.getHours() == 12) return index;
+
+      currDay = date.getDate();
+      console.log("currDay: " + currDay);
+    }
+    return index - 1;
+  };
+
+  getIndexOfSecondDay = (data, day) => {
+    let index = this.getIndexOfFirstDay(data, day);
+    let date = new Date(data.list[index].dt_txt);
+    let hourOfFirstDay = date.getHours();
+
+    if (hourOfFirstDay === 12) return index + 8;
+    else {
+      let currHour = hourOfFirstDay;
+      while (currHour != 24) {
+        currHour += 3;
+        index++;
+      }
+      return index + 4;
+    }
   };
 
   render() {
@@ -105,13 +282,17 @@ class App extends Component {
     var divImage = {
       //background: this.state.color
       color: this.state.color,
-      background: this.state.img
+      // background: `${this.state.img}` //no-repeat center center fixed
+      backgroundImage: `${this.state.img}`,
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      backgroundRepeat: "noRepeat"
     };
 
     var divImage2 = {
       flex: 1,
       //backgroundColor: "rgba(0,0,0,.6"
-      background: "rgba(0,0,0,.5)"
+      background: "rgba(0,0,0,.6)"
     };
     return (
       // <div className="App">
@@ -261,24 +442,37 @@ class App extends Component {
                     Ab, quisquam?
                   </p>
                 </div> */}
-                  <h2 className="display-5">MON</h2>
-                  <button onClick={this.testHandler}>TEST</button>
-                </div>
-                <div className="col">
-                  {/* <h2 className="display-5" /> */}
+                  {/* <h2 className="display-5">MON</h2>
+                  <button onClick={this.testHandler}>TEST</button> */}
                   <WeatherCard
                     key={this.state.weatherCards[0].id}
                     weatherInfo={this.state.weatherCards[0]}
                   />
                 </div>
                 <div className="col">
-                  <h2 className="display-5">WED</h2>
+                  {/* <h2 className="display-5" /> */}
+                  <WeatherCard
+                    key={this.state.weatherCards[1].id}
+                    weatherInfo={this.state.weatherCards[1]}
+                  />
                 </div>
                 <div className="col">
-                  <h2 className="display-5">THU</h2>
+                  <WeatherCard
+                    key={this.state.weatherCards[2].id}
+                    weatherInfo={this.state.weatherCards[2]}
+                  />
                 </div>
                 <div className="col">
-                  <h2 className="display-5">FRI</h2>
+                  <WeatherCard
+                    key={this.state.weatherCards[3].id}
+                    weatherInfo={this.state.weatherCards[3]}
+                  />
+                </div>
+                <div className="col">
+                  <WeatherCard
+                    key={this.state.weatherCards[4].id}
+                    weatherInfo={this.state.weatherCards[4]}
+                  />
                 </div>
               </div>
             </div>
@@ -312,7 +506,9 @@ class App extends Component {
         </div>
         <SearchBar
           key={0}
-          notifySubmit={cityID => this.userSubmitHandler(cityID)}
+          notifySubmit={(cityID, cityName) =>
+            this.userSubmitHandler(cityID, cityName)
+          }
         />
       </React.Fragment>
     );

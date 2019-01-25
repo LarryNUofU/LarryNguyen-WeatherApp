@@ -301,8 +301,23 @@ class SearchBar extends Component {
     //console.log(suggestion);
     this.setState({ selectedSuggestionCityID: suggestion.id });
 
-    this.props.notifySubmit(suggestion.id);
+    this.props.notifySubmit(suggestion.id, suggestion.name);
   };
+
+  //   jsonFlickrApi = rsp => {
+  //     if (rsp.stat != "ok") console.log("OOPS!");
+
+  //     console.log("IM IN HERE");
+  //     console.log(rsp);
+  //     console.log(rsp.photos.photo[0]);
+  //     let i = Math.floor(Math.random() * 30);
+  //     this.setState({
+  //       color: "WHITE",
+  //       img: `https://farm${rsp.photos.photo[i].farm}.staticflickr.com/${
+  //         rsp.photos.photo[i].server
+  //       }/${rsp.photos.photo[i].id}_${rsp.photos.photo[i].secret}.jpg`
+  //     });
+  //   };
 
   render() {
     //console.log(this.state.value);
