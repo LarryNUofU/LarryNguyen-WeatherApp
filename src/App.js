@@ -56,6 +56,10 @@ class App extends Component {
     ]
   };
 
+  componentDidMount = () => {
+    this.userSubmitHandler(5809844, "Seattle");
+  };
+
   testHandler = () => {
     console.log("HSIEFHISEHFSIF");
     //let data = JSON.parse(cityList);
