@@ -22,6 +22,7 @@ class App extends Component {
     city: "Salt Lake City",
     isLoading: false,
 
+    cardIdCurrentlyHover: null,
     weatherCards: [
       {
         id: 0,
@@ -53,11 +54,21 @@ class App extends Component {
         weatherStatus: null,
         tempC: null
       }
-    ]
+    ],
+
+    shouldShow: false
   };
 
   componentDidMount = () => {
     this.userSubmitHandler(5809844, "Seattle");
+  };
+
+  mouseOverCardHandler = id => {
+    this.setState({ shouldShow: true, cardIdCurrentlyHover: id });
+  };
+
+  mouseOutCardHandler = () => {
+    this.setState({ shouldShow: false });
   };
 
   testHandler = () => {
@@ -293,7 +304,11 @@ class App extends Component {
       }.png`,
       weatherStatus: `${data.list[hourIndex].weather[0].main}`,
       tempC: `${data.list[hourIndex].main.temp}`,
-      dateString: data.list[hourIndex].dt_txt
+      dateString: data.list[hourIndex].dt_txt,
+      minC: `${data.list[hourIndex].main.temp_min}`,
+      maxC: `${data.list[hourIndex].main.temp_max}`,
+      windSpeed: `${data.list[hourIndex].wind.speed}`,
+      windDegree: `${data.list[hourIndex].wind.deg}`
     };
   };
 
@@ -317,6 +332,12 @@ class App extends Component {
       //backgroundColor: "rgba(0,0,0,.6"
       background: "rgba(0,0,0,.6)"
     };
+
+    var divImage3 = {
+      backgroundColor: "yellow"
+    };
+
+    // let shouldShow = { value: false };
     return (
       // <div className="App">
       //   <header className="App-header">
@@ -467,38 +488,71 @@ class App extends Component {
                 </div> */}
                   {/* <h2 className="display-5">MON</h2>
                   <button onClick={this.testHandler}>TEST</button> */}
-                  <WeatherCard
-                    key={this.state.weatherCards[0].id}
-                    weatherInfo={this.state.weatherCards[0]}
-                  />
+                  <div
+                    className="yo"
+                    onMouseOver={() => this.mouseOverCardHandler(0)}
+                    onMouseOut={() => this.mouseOutCardHandler()}
+                  >
+                    <WeatherCard
+                      mouseOn={() => this.mouseOverCardHandler}
+                      key={this.state.weatherCards[0].id}
+                      weatherInfo={this.state.weatherCards[0]}
+                    />
+                  </div>
                 </div>
                 <div className="col">
                   {/* <h2 className="display-5" /> */}
-                  <WeatherCard
-                    key={this.state.weatherCards[1].id}
-                    weatherInfo={this.state.weatherCards[1]}
-                  />
+                  <div
+                    className="yo"
+                    onMouseOver={() => this.mouseOverCardHandler(1)}
+                    onMouseOut={() => this.mouseOutCardHandler()}
+                  >
+                    <WeatherCard
+                      key={this.state.weatherCards[1].id}
+                      weatherInfo={this.state.weatherCards[1]}
+                    />
+                  </div>
                 </div>
                 <div className="col">
-                  <WeatherCard
-                    key={this.state.weatherCards[2].id}
-                    weatherInfo={this.state.weatherCards[2]}
-                  />
+                  <div
+                    className="yo"
+                    onMouseOver={() => this.mouseOverCardHandler(2)}
+                    onMouseOut={() => this.mouseOutCardHandler()}
+                  >
+                    <WeatherCard
+                      key={this.state.weatherCards[2].id}
+                      weatherInfo={this.state.weatherCards[2]}
+                    />
+                  </div>
                 </div>
                 <div className="col">
-                  <WeatherCard
-                    key={this.state.weatherCards[3].id}
-                    weatherInfo={this.state.weatherCards[3]}
-                  />
+                  <div
+                    className="yo"
+                    onMouseOver={() => this.mouseOverCardHandler(3)}
+                    onMouseOut={() => this.mouseOutCardHandler()}
+                  >
+                    <WeatherCard
+                      key={this.state.weatherCards[3].id}
+                      weatherInfo={this.state.weatherCards[3]}
+                    />
+                  </div>
                 </div>
                 <div className="col">
-                  <WeatherCard
-                    key={this.state.weatherCards[4].id}
-                    weatherInfo={this.state.weatherCards[4]}
-                  />
+                  <div
+                    className="yo"
+                    onMouseOver={() => this.mouseOverCardHandler(4)}
+                    onMouseOut={() => this.mouseOutCardHandler()}
+                  >
+                    <WeatherCard
+                      key={this.state.weatherCards[4].id}
+                      weatherInfo={this.state.weatherCards[4]}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+
+            {this.shouldShowHandler()}
             {/* <Typeahead
             // labelKey={option => `${option.firstName} ${option.lastName}`}
             //labelKey={option => `${option.name}, ${option.country}`}
@@ -533,9 +587,43 @@ class App extends Component {
             this.userSubmitHandler(cityID, cityName)
           }
         />
+
+        {/* <h3>OLOLO</h3> */}
       </React.Fragment>
     );
   }
+
+  shouldShowHandler = () => {
+    console.log("cardId current: " + this.state.cardIdCurrentlyHover);
+    console.log(this.state.shouldShow);
+    if (this.state.shouldShow) {
+      return (
+        <div className="positionExtraInfo">
+          <h5>
+            {`min: ${
+              this.state.weatherCards[this.state.cardIdCurrentlyHover].minC
+            }`}
+            &deg;C <br />{" "}
+            {`max: ${
+              this.state.weatherCards[this.state.cardIdCurrentlyHover].maxC
+            }`}
+            &deg;C <br />{" "}
+            {`wind speed: ${
+              this.state.weatherCards[this.state.cardIdCurrentlyHover].windSpeed
+            }`}
+            &nbsp;m/s
+            <br />{" "}
+            {`wind degree: ${
+              this.state.weatherCards[this.state.cardIdCurrentlyHover]
+                .windDegree
+            }`}
+            &deg;
+          </h5>
+        </div>
+      );
+    }
+    return <div />;
+  };
 }
 
 export default App;
