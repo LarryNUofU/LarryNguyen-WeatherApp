@@ -197,41 +197,53 @@ class App extends Component {
     let indexOfSecondDay = -1;
 
     for (var i = 0; i < this.state.weatherCards.length; i++) {
+      // if (i == 0) {
+      //   let indexOfFirstDay = this.getIndexOfFirstDay(data, day);
+      //   console.log("index of first: " + indexOfFirstDay);
+      //   updatedWeatherCards[i] = {
+      //     id: i,
+      //     weatherImg: `http://openweathermap.org/img/w/${
+      //       data.list[indexOfFirstDay].weather[0].icon
+      //     }.png`,
+      //     weatherStatus: `${data.list[indexOfFirstDay].weather[0].main}`,
+      //     tempC: `${data.list[indexOfFirstDay].main.temp}`,
+      //     dateString: data.list[indexOfFirstDay].dt_txt
+      //   };
+      // } else if (i == 1) {
+      //   indexOfSecondDay = this.getIndexOfSecondDay(data, day);
+      //   updatedWeatherCards[i] = {
+      //     id: i,
+      //     weatherImg: `http://openweathermap.org/img/w/${
+      //       data.list[indexOfSecondDay].weather[0].icon
+      //     }.png`,
+      //     weatherStatus: `${data.list[indexOfSecondDay].weather[0].main}`,
+      //     tempC: `${data.list[indexOfSecondDay].main.temp}`,
+      //     dateString: data.list[indexOfSecondDay].dt_txt
+      //   };
+      //   hourIndex = indexOfSecondDay;
+      // } else {
+      //   hourIndex += 8;
+      //   updatedWeatherCards[i] = {
+      //     id: i,
+      //     weatherImg: `http://openweathermap.org/img/w/${
+      //       data.list[hourIndex].weather[0].icon
+      //     }.png`,
+      //     weatherStatus: `${data.list[hourIndex].weather[0].main}`,
+      //     tempC: `${data.list[hourIndex].main.temp}`,
+      //     dateString: data.list[hourIndex].dt_txt
+      //   };
+      // }
+
       if (i == 0) {
         let indexOfFirstDay = this.getIndexOfFirstDay(data, day);
-        console.log("index of first: " + indexOfFirstDay);
-        updatedWeatherCards[i] = {
-          id: i,
-          weatherImg: `http://openweathermap.org/img/w/${
-            data.list[indexOfFirstDay].weather[0].icon
-          }.png`,
-          weatherStatus: `${data.list[indexOfFirstDay].weather[0].main}`,
-          tempC: `${data.list[indexOfFirstDay].main.temp}`,
-          dateString: data.list[indexOfFirstDay].dt_txt
-        };
+        this.updateWeatherCard(updatedWeatherCards, indexOfFirstDay, i, data);
       } else if (i == 1) {
         indexOfSecondDay = this.getIndexOfSecondDay(data, day);
-        updatedWeatherCards[i] = {
-          id: i,
-          weatherImg: `http://openweathermap.org/img/w/${
-            data.list[indexOfSecondDay].weather[0].icon
-          }.png`,
-          weatherStatus: `${data.list[indexOfSecondDay].weather[0].main}`,
-          tempC: `${data.list[indexOfSecondDay].main.temp}`,
-          dateString: data.list[indexOfSecondDay].dt_txt
-        };
+        this.updateWeatherCard(updatedWeatherCards, indexOfSecondDay, i, data);
         hourIndex = indexOfSecondDay;
       } else {
         hourIndex += 8;
-        updatedWeatherCards[i] = {
-          id: i,
-          weatherImg: `http://openweathermap.org/img/w/${
-            data.list[hourIndex].weather[0].icon
-          }.png`,
-          weatherStatus: `${data.list[hourIndex].weather[0].main}`,
-          tempC: `${data.list[hourIndex].main.temp}`,
-          dateString: data.list[hourIndex].dt_txt
-        };
+        this.updateWeatherCard(updatedWeatherCards, hourIndex, i, data);
       }
     }
 
@@ -269,13 +281,20 @@ class App extends Component {
 
     if (hourOfFirstDay === 12) return index + 8;
     else {
-      let currHour = hourOfFirstDay;
-      while (currHour != 24) {
-        currHour += 3;
-        index++;
-      }
-      return index + 4;
+      return index + 5;
     }
+  };
+
+  updateWeatherCard = (updatedWeatherCards, hourIndex, i, data) => {
+    updatedWeatherCards[i] = {
+      id: i,
+      weatherImg: `http://openweathermap.org/img/w/${
+        data.list[hourIndex].weather[0].icon
+      }.png`,
+      weatherStatus: `${data.list[hourIndex].weather[0].main}`,
+      tempC: `${data.list[hourIndex].main.temp}`,
+      dateString: data.list[hourIndex].dt_txt
+    };
   };
 
   render() {
