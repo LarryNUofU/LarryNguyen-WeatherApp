@@ -208,42 +208,6 @@ class App extends Component {
     let indexOfSecondDay = -1;
 
     for (var i = 0; i < this.state.weatherCards.length; i++) {
-      // if (i == 0) {
-      //   let indexOfFirstDay = this.getIndexOfFirstDay(data, day);
-      //   console.log("index of first: " + indexOfFirstDay);
-      //   updatedWeatherCards[i] = {
-      //     id: i,
-      //     weatherImg: `http://openweathermap.org/img/w/${
-      //       data.list[indexOfFirstDay].weather[0].icon
-      //     }.png`,
-      //     weatherStatus: `${data.list[indexOfFirstDay].weather[0].main}`,
-      //     tempC: `${data.list[indexOfFirstDay].main.temp}`,
-      //     dateString: data.list[indexOfFirstDay].dt_txt
-      //   };
-      // } else if (i == 1) {
-      //   indexOfSecondDay = this.getIndexOfSecondDay(data, day);
-      //   updatedWeatherCards[i] = {
-      //     id: i,
-      //     weatherImg: `http://openweathermap.org/img/w/${
-      //       data.list[indexOfSecondDay].weather[0].icon
-      //     }.png`,
-      //     weatherStatus: `${data.list[indexOfSecondDay].weather[0].main}`,
-      //     tempC: `${data.list[indexOfSecondDay].main.temp}`,
-      //     dateString: data.list[indexOfSecondDay].dt_txt
-      //   };
-      //   hourIndex = indexOfSecondDay;
-      // } else {
-      //   hourIndex += 8;
-      //   updatedWeatherCards[i] = {
-      //     id: i,
-      //     weatherImg: `http://openweathermap.org/img/w/${
-      //       data.list[hourIndex].weather[0].icon
-      //     }.png`,
-      //     weatherStatus: `${data.list[hourIndex].weather[0].main}`,
-      //     tempC: `${data.list[hourIndex].main.temp}`,
-      //     dateString: data.list[hourIndex].dt_txt
-      //   };
-      // }
 
       if (i == 0) {
         let indexOfFirstDay = this.getIndexOfFirstDay(data, day);
@@ -337,137 +301,9 @@ class App extends Component {
       backgroundColor: "yellow"
     };
 
-    // let shouldShow = { value: false };
+    
     return (
-      // <div className="App">
-      //   <header className="App-header">
-      //     <img src={logo} className="App-logo" alt="logo" />
-      //     <p>
-      //       Edit <code>src/App.js</code> and save to reload.
-      //     </p>
-      //     <a
-      //       className="App-link"
-      //       href="https://reactjs.org"
-      //       target="_blank"
-      //       rel="noopener noreferrer"
-      //     >
-      //       Learn React
-      //     </a>
-      //   </header>
-      // </div>
-
-      // <div className="container">
-      //   <div className="row align-items-start">
-      //     <div className="col-sm">One of three columns</div>
-      //     <div className="col-sm">One of three columns</div>
-      //     <div className="col-sm">One of three columns</div>
-      //     <div className="col-sm">One of three columns</div>
-      //     <div className="col-sm">One of five columns</div>
-      //   </div>
-      // </div>
-      // <div>
-      //   <div className="fullscreen" style={divImage}>
-      //     <div className="fullscreen2" style={divImage2}>
-      //       <h1 className="display-2">Salt Lake City</h1>
-      //       <div className="container mt-5">
-      //         <div className="row align-self-end">
-      //           <div className="col">
-      //             <img
-      //               src="https://picsum.photos/200"
-      //               className="rounded-circle"
-      //               alt="Europe"
-      //             />
-      //             <div className="caption">
-      //               <p>
-      //                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      //                 Ab, quisquam?
-      //               </p>
-      //             </div>
-      //           </div>
-      //           <div className="col">One of three columns</div>
-      //           <div className="col">One of three columns</div>
-      //           <div className="col">One of three columns</div>
-      //           <div className="col">One of three columns</div>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div>
-
-      // <div className="fullscreen" style={divImage}>
-      //   <div className="fullscreen" style={divImage2}>
-      //     <h1 className="display-2">{this.state.city}</h1>
-      //     <div className="container mt-5">
-      //       <div className="row align-self-end">
-      //         <div className="col">
-      //           {/* <img
-      //             src="https://picsum.photos/200"
-      //             className="rounded-circle"
-      //             alt="Europe"
-      //           />
-      //           <div className="caption">
-      //             <p>
-      //               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      //               Ab, quisquam?
-      //             </p>
-      //           </div> */}
-      //           <h2 className="display-5">MON</h2>
-      //           <button onClick={this.testHandler}>TEST</button>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">TUE</h2>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">WED</h2>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">THU</h2>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">FRI</h2>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div>
-
-      // <div className="fullscreen" style={divImage}>
-      //   <div className="fullscreen" style={divImage2}>
-      //     <h1 className="display-2">{this.state.city}</h1>
-      //     <div className="container mt-5">
-      //       <div className="row align-self-end">
-      //         <div className="col">
-      //           {/* <img
-      //             src="https://picsum.photos/200"
-      //             className="rounded-circle"
-      //             alt="Europe"
-      //           />
-      //           <div className="caption">
-      //             <p>
-      //               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      //               Ab, quisquam?
-      //             </p>
-      //           </div> */}
-      //           <h2 className="display-5">MON</h2>
-      //           <button onClick={this.testHandler}>TEST</button>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">TUE</h2>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">WED</h2>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">THU</h2>
-      //         </div>
-      //         <div className="col">
-      //           <h2 className="display-5">FRI</h2>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div>
-
+     
       <React.Fragment>
         <div className="fullscreen" style={divImage}>
           <div className="fullscreen" style={divImage2}>
@@ -475,19 +311,7 @@ class App extends Component {
             <div className="container mt-5">
               <div className="row align-self-end">
                 <div className="col">
-                  {/* <img
-                  src="https://picsum.photos/200"
-                  className="rounded-circle"
-                  alt="Europe"
-                />
-                <div className="caption">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Ab, quisquam?
-                  </p>
-                </div> */}
-                  {/* <h2 className="display-5">MON</h2>
-                  <button onClick={this.testHandler}>TEST</button> */}
+                 
                   <div
                     className="yo"
                     onMouseOver={() => this.mouseOverCardHandler(0)}
@@ -553,32 +377,7 @@ class App extends Component {
             </div>
 
             {this.shouldShowHandler()}
-            {/* <Typeahead
-            // labelKey={option => `${option.firstName} ${option.lastName}`}
-            //labelKey={option => `${option.name}, ${option.country}`}
-            labelKey={option => option.name}
-            ref={typeahead => (this.typeahead = typeahead)}
-            onChange={selected => {
-              this.setState({ selected });
-              this.testInputHandler();
-              if (selected.length) {
-                this.typeahead.getInstance().clear();
-              }
-            }}
-            // options={[
-            //   { firstName: "Art", lastName: "Blakey" },
-            //   { firstName: "John", lastName: "Coltrane" },
-            //   { firstName: "Miles", lastName: "Davis" },
-            //   { firstName: "Herbie", lastName: "Hancock" },
-            //   { firstName: "Charlie", lastName: "Parker" },
-            //   { firstName: "Tony", lastName: "Williams" }
-            // ]}
-            options={cityList}
-            selected={this.state.selected}
-            maxResults={10}
-            placeholder="Select a city..."
-          /> */}
-            {/* ); */}
+          
           </div>
         </div>
         <SearchBar
@@ -588,7 +387,7 @@ class App extends Component {
           }
         />
 
-        {/* <h3>OLOLO</h3> */}
+       
       </React.Fragment>
     );
   }
